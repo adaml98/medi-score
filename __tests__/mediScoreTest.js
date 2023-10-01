@@ -70,4 +70,24 @@ test("should return the correct score if patient's respiration rate is out of ra
   expect(result2).toBe(7);
 });
 
-expect(result).toBe(5);
+test("should return the correct score if patient's temperature is abnormal", () => {
+  const patient = {
+    airOrOxygen: 2,
+    consciousness: 2,
+    respirationRate: 15,
+    spo2: 92,
+    temperature: 34.55,
+  };
+  const result = mediScore(patient);
+  expect(result).toBe(7);
+
+  const patient2 = {
+    airOrOxygen: 2,
+    consciousness: 2,
+    respirationRate: 15,
+    spo2: 92,
+    temperature: 38.55,
+  };
+  const result2 = mediScore(patient2);
+  expect(result2).toBe(5);
+});
