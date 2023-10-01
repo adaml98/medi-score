@@ -1,0 +1,15 @@
+{
+  "name": "medi-score",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mediScore.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
