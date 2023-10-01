@@ -135,4 +135,15 @@ test("should return the correct score depending on a patient's CBG", () => {
   };
   const result = mediScore(patient);
   expect(result).toBe(6);
+
+  const patient2 = {
+    airOrOxygen: 2,
+    consciousness: 2,
+    respirationRate: 15,
+    spo2: 92,
+    temperature: 37.1,
+    cbg: { value: 5.4, fasting: true },
+  };
+  const result2 = mediScore(patient2);
+  expect(result2).toBe(4);
 });

@@ -31,24 +31,26 @@ function mediScore({
     temperatureScore = 1;
   }
 
-  if (spo2 <= 83 || (spo2 >= 97 && airOrOxygen === 2)) {
-    spo2Score = 3;
-  } else if (
-    spo2 === 84 ||
-    spo2 === 85 ||
-    (spo2 === 95 && airOrOxygen === 2) ||
-    (spo2 === 96 && airOrOxygen === 2)
-  ) {
-    spo2Score = 2;
-  } else if (
-    spo2 === 86 ||
-    spo2 === 87 ||
-    (spo2 === 93 && airOrOxygen === 2) ||
-    (spo2 === 94 && airOrOxygen === 2)
-  ) {
-    spo2Score = 1;
+  if (airOrOxygen === 2) {
+    if (spo2 >= 97) {
+      spo2Score = 3;
+    } else if (spo2 === 95 || spo2 === 96) {
+      spo2Score = 2;
+    } else if (spo2 === 93 || spo2 === 94) {
+      spo2Score = 1;
+    } else {
+      spo2Score = 0;
+    }
   } else {
-    spo2Score = 0;
+    if (spo2 <= 83) {
+      spo2Score = 3;
+    } else if (spo2 === 84 || spo2 === 85) {
+      spo2Score = 2;
+    } else if (spo2 === 86 || spo2 === 87) {
+      spo2Score = 1;
+    } else {
+      spo2Score = 0;
+    }
   }
 
   if (cbg.fasting) {
