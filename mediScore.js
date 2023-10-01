@@ -1,5 +1,5 @@
-function mediScore({ airOrOxygen }) {
-  return airOrOxygen === 0 ? 0 : 2;
+function mediScore({ airOrOxygen, consciousness }) {
+  return airOrOxygen + consciousness;
 }
 
 module.exports = mediScore;
