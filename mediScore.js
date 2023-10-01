@@ -4,10 +4,12 @@ function mediScore({
   respirationRate,
   temperature,
   spo2,
+  cbg,
 }) {
   let respirationScore;
   let temperatureScore;
   let spo2Score;
+  let cbgScore;
 
   if (respirationRate >= 12 && respirationRate <= 20) {
     respirationScore = 0;
@@ -48,12 +50,32 @@ function mediScore({
   } else {
     spo2Score = 0;
   }
+
+  if (cbg.fasting) {
+    if (cbg.value <= 3.4 || cbg.value >= 6.0) {
+      cbgScore = 3;
+    } else if (cbg.value >= 4.0 && cbg.value <= 5.4) {
+      cbgScore = 0;
+    } else {
+      cbgScore = 2;
+    }
+  } else {
+    if (cbg.value <= 4.5 || cbg.value >= 9.0) {
+      cbgScore = 3;
+    } else if (cbg.value >= 5.9 && cbg.value <= 7.8) {
+      cbgScore = 0;
+    } else {
+      cbgScore = 2;
+    }
+  }
+
   return (
     airOrOxygen +
     consciousness +
     respirationScore +
     temperatureScore +
-    spo2Score
+    spo2Score +
+    cbgScore
   );
 }
 

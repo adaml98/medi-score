@@ -7,6 +7,7 @@ test("should return an integer", () => {
     respirationRate: 15,
     spo2: 95,
     temperature: 37.1,
+    cbg: { value: 5.4, fasting: true },
   };
   const result = mediScore(patient);
   expect(typeof result).toBe("number");
@@ -19,6 +20,7 @@ test("should return a score of 0 if a patient does not require extra oxygen", ()
     respirationRate: 15,
     spo2: 95,
     temperature: 37.1,
+    cbg: { value: 5.4, fasting: true },
   };
   const result = mediScore(patient);
   expect(result).toBe(0);
@@ -31,6 +33,7 @@ test("should return a score of 2 if a patient requires extra oxygen", () => {
     respirationRate: 15,
     spo2: 92,
     temperature: 37.1,
+    cbg: { value: 5.4, fasting: true },
   };
   const result = mediScore(patient);
   expect(result).toBe(2);
@@ -43,6 +46,7 @@ test("should return the correct score if a patient is unconscious", () => {
     respirationRate: 15,
     spo2: 92,
     temperature: 37.1,
+    cbg: { value: 5.4, fasting: true },
   };
   const result = mediScore(patient);
   expect(result).toBe(4);
@@ -55,6 +59,7 @@ test("should return the correct score if a patient's respiration rate is out of 
     respirationRate: 11,
     spo2: 92,
     temperature: 37.1,
+    cbg: { value: 5.4, fasting: true },
   };
   const result = mediScore(patient);
   expect(result).toBe(5);
@@ -65,6 +70,7 @@ test("should return the correct score if a patient's respiration rate is out of 
     respirationRate: 26,
     spo2: 92,
     temperature: 37.1,
+    cbg: { value: 5.4, fasting: true },
   };
   const result2 = mediScore(patient2);
   expect(result2).toBe(7);
@@ -77,6 +83,7 @@ test("should return the correct score if a patient's temperature is abnormal", (
     respirationRate: 15,
     spo2: 92,
     temperature: 34.55,
+    cbg: { value: 5.4, fasting: true },
   };
   const result = mediScore(patient);
   expect(result).toBe(7);
@@ -87,6 +94,7 @@ test("should return the correct score if a patient's temperature is abnormal", (
     respirationRate: 15,
     spo2: 92,
     temperature: 38.55,
+    cbg: { value: 5.4, fasting: true },
   };
   const result2 = mediScore(patient2);
   expect(result2).toBe(5);
@@ -99,6 +107,7 @@ test("should return the correct score if a patients spo2 is out of range", () =>
     respirationRate: 15,
     spo2: 96,
     temperature: 37.1,
+    cbg: { value: 5.4, fasting: true },
   };
   const result = mediScore(patient);
   expect(result).toBe(4);
@@ -109,7 +118,21 @@ test("should return the correct score if a patients spo2 is out of range", () =>
     respirationRate: 15,
     spo2: 93,
     temperature: 37.1,
+    cbg: { value: 5.4, fasting: true },
   };
   const result2 = mediScore(patient2);
   expect(result2).toBe(0);
+});
+
+test("should return the correct score depending on a patient's CBG", () => {
+  const patient = {
+    airOrOxygen: 2,
+    consciousness: 2,
+    respirationRate: 15,
+    spo2: 92,
+    temperature: 37.1,
+    cbg: { value: 5.4, fasting: false },
+  };
+  const result = mediScore(patient);
+  expect(result).toBe(6);
 });
