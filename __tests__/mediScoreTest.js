@@ -147,3 +147,30 @@ test("should return the correct score depending on a patient's CBG", () => {
   const result2 = mediScore(patient2);
   expect(result2).toBe(4);
 });
+
+test("should return a warning message if a patients mediScore has increased by more than 2 since the last evaluation", () => {
+  const patient = {
+    airOrOxygen: 2,
+    consciousness: 2,
+    respirationRate: 11,
+    spo2: 92,
+    temperature: 37.1,
+    cbg: { value: 5.4, fasting: false },
+    previousMediScore: 4,
+  };
+  const result = mediScore(patient);
+  expect(result.mediScore).toBe(7);
+  expect(result.warning).toBe("Warning - MediScore increased by 3 in 24 hours");
+
+  const patient2 = {
+    airOrOxygen: 2,
+    consciousness: 2,
+    respirationRate: 11,
+    spo2: 92,
+    temperature: 37.1,
+    cbg: { value: 5.4, fasting: false },
+    previousMediScore: 6,
+  };
+  const result2 = mediScore(patient2);
+  expect(result2).toBe(7);
+});

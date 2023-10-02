@@ -5,11 +5,14 @@ function mediScore({
   temperature,
   spo2,
   cbg,
+  previousMediScore,
 }) {
   let respirationScore;
   let temperatureScore;
   let spo2Score;
   let cbgScore;
+
+  //Calculate respiration score
 
   if (respirationRate >= 12 && respirationRate <= 20) {
     respirationScore = 0;
@@ -21,6 +24,8 @@ function mediScore({
     respirationScore = 3;
   }
 
+  //Calculate temperature score
+
   if (temperature <= 35) {
     temperatureScore = 3;
   } else if (temperature >= 39.1) {
@@ -30,6 +35,8 @@ function mediScore({
   } else {
     temperatureScore = 1;
   }
+
+  //Calculate SPO2 score
 
   if (airOrOxygen === 2) {
     if (spo2 >= 97) {
@@ -53,6 +60,8 @@ function mediScore({
     }
   }
 
+  //Calculate CBG score
+
   if (cbg.fasting) {
     if (cbg.value <= 3.4 || cbg.value >= 6.0) {
       cbgScore = 3;
@@ -71,14 +80,34 @@ function mediScore({
     }
   }
 
-  return (
+  //Calculate the Medi score
+
+  const mediScore =
     airOrOxygen +
     consciousness +
     respirationScore +
     temperatureScore +
     spo2Score +
-    cbgScore
-  );
+    cbgScore;
+
+  /*
+  If there is a previous Medi score, check whether it has
+  risen by a dangerous amount and return a warning if so
+  */
+
+  if (previousMediScore !== undefined && mediScore - previousMediScore > 2) {
+    const warning = `Warning - MediScore increased by ${
+      mediScore - previousMediScore
+    } in 24 hours`;
+    return {
+      mediScore,
+      warning,
+    };
+  }
+
+  // Return the calculated Medi score
+
+  return mediScore;
 }
 
 module.exports = mediScore;
