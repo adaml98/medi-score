@@ -165,7 +165,7 @@ describe("calculateCBGScore()", () => {
   });
 });
 describe("hasIncreased24hours()", () => {
-  test("should return a warning message if a patients caculateMediScore has increased by more than 2 in 24 hours", () => {
+  test("should return a warning message if a patients score has increased by more than 2 in 24 hours", () => {
     const patient = {
       airOrOxygen: 2,
       consciousness: 2,
@@ -187,7 +187,7 @@ describe("hasIncreased24hours()", () => {
     );
   });
 
-  test("should not return a warning message if a patients caculateMediScore has not increased by more than 2 in 24 hours", () => {
+  test("should not return a warning message if a patients score has not increased by more than 2 in 24 hours", () => {
     const patient = {
       airOrOxygen: 2,
       consciousness: 2,
@@ -205,7 +205,7 @@ describe("hasIncreased24hours()", () => {
     expect(result).toBe(7);
   });
 
-  test("should not return a warning message if a patients caculateMediScore has increased by more than 2 in more than 24 hours", () => {
+  test("should not return a warning message if a patients score has increased by more than 2 in more than 24 hours", () => {
     const patient = {
       airOrOxygen: 2,
       consciousness: 2,
