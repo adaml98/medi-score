@@ -5,6 +5,7 @@ function mediScore({
   temperature,
   spo2,
   cbg,
+  dateOfScore,
   previousMediScore,
 }) {
   let respirationScore;
@@ -92,21 +93,24 @@ function mediScore({
 
   /*
   If there is a previous Medi score, check whether it has
-  risen by a dangerous amount and return a warning if so
+  risen by a dangerous amount within 24 hours 
+  and return mediscore and a warning if so
   */
 
-  if (previousMediScore !== undefined && mediScore - previousMediScore > 2) {
+  if (
+    previousMediScore !== undefined &&
+    dateOfScore - previousMediScore.dateOfScore <= 86400000 &&
+    mediScore - previousMediScore.score > 2
+  ) {
     const warning = `Warning - MediScore increased by ${
-      mediScore - previousMediScore
+      mediScore - previousMediScore.score
     } in 24 hours`;
     return {
       mediScore,
       warning,
     };
   }
-
-  // Return the calculated Medi score
-
+  // Otherwise just return the calculated Medi score with no warning
   return mediScore;
 }
 
