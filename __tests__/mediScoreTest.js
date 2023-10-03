@@ -1,4 +1,4 @@
-const mediScore = require("../mediScore.js");
+const caculateMediScore = require("../mediScore.js");
 
 test("should return an integer", () => {
   const patient = {
@@ -10,7 +10,7 @@ test("should return an integer", () => {
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
   expect(typeof result).toBe("number");
 });
 
@@ -24,7 +24,7 @@ test("should return a score of 0 if a patient does not require extra oxygen", ()
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
   expect(result).toBe(0);
 });
 
@@ -38,7 +38,7 @@ test("should return a score of 2 if a patient requires extra oxygen", () => {
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
   expect(result).toBe(2);
 });
 
@@ -52,7 +52,7 @@ test("should return the correct score if a patient is unconscious", () => {
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
   expect(result).toBe(4);
 });
 
@@ -66,7 +66,7 @@ test("should return the correct score if a patient's respiration rate is out of 
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
   expect(result).toBe(5);
 
   const patient2 = {
@@ -78,7 +78,7 @@ test("should return the correct score if a patient's respiration rate is out of 
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result2 = mediScore(patient2);
+  const result2 = caculateMediScore(patient2);
   expect(result2).toBe(7);
 });
 
@@ -92,7 +92,7 @@ test("should return the correct score if a patient's temperature is abnormal", (
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
   expect(result).toBe(7);
 
   const patient2 = {
@@ -104,7 +104,7 @@ test("should return the correct score if a patient's temperature is abnormal", (
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result2 = mediScore(patient2);
+  const result2 = caculateMediScore(patient2);
   expect(result2).toBe(5);
 });
 
@@ -118,7 +118,7 @@ test("should return the correct score if a patients spo2 is out of range", () =>
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
   expect(result).toBe(4);
 
   const patient2 = {
@@ -130,7 +130,7 @@ test("should return the correct score if a patients spo2 is out of range", () =>
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result2 = mediScore(patient2);
+  const result2 = caculateMediScore(patient2);
   expect(result2).toBe(0);
 });
 
@@ -144,7 +144,7 @@ test("should return the correct score depending on a patient's CBG", () => {
     cbg: { value: 5.4, fasting: false },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
   expect(result).toBe(6);
 
   const patient2 = {
@@ -156,11 +156,11 @@ test("should return the correct score depending on a patient's CBG", () => {
     cbg: { value: 5.4, fasting: true },
     dateOfScore: new Date("October 3, 2023 08:11:00"),
   };
-  const result2 = mediScore(patient2);
+  const result2 = caculateMediScore(patient2);
   expect(result2).toBe(4);
 });
 
-test.only("should return a warning message if a patients mediScore has increased by more than 2 in 24 hours", () => {
+test("should return a warning message if a patients caculateMediScore has increased by more than 2 in 24 hours", () => {
   const patient = {
     airOrOxygen: 2,
     consciousness: 2,
@@ -174,12 +174,15 @@ test.only("should return a warning message if a patients mediScore has increased
       dateOfScore: new Date("October 2, 2023 08:11:00"),
     },
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
+  console.log(result);
   expect(result.mediScore).toBe(7);
-  expect(result.warning).toBe("Warning - MediScore increased by 3 in 24 hours");
+  expect(result.warning).toBe(
+    "Warning - MediScore increased by more than 2 within 24 hours"
+  );
 });
 
-test("should not return a warning message if a patients mediScore has not increased by more than 2 in 24 hours", () => {
+test("should not return a warning message if a patients caculateMediScore has not increased by more than 2 in 24 hours", () => {
   const patient = {
     airOrOxygen: 2,
     consciousness: 2,
@@ -193,11 +196,11 @@ test("should not return a warning message if a patients mediScore has not increa
       dateOfScore: new Date("October 3, 2023 08:11:00"),
     },
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
   expect(result).toBe(7);
 });
 
-test("should not return a warning message if a patients mediScore has increased by more than 2 in more than 24 hours", () => {
+test("should not return a warning message if a patients caculateMediScore has increased by more than 2 in more than 24 hours", () => {
   const patient = {
     airOrOxygen: 2,
     consciousness: 2,
@@ -211,6 +214,6 @@ test("should not return a warning message if a patients mediScore has increased 
       dateOfScore: new Date("October 3, 2023 08:11:00"),
     },
   };
-  const result = mediScore(patient);
+  const result = caculateMediScore(patient);
   expect(result).toBe(7);
 });
