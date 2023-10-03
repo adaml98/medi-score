@@ -1,4 +1,5 @@
 function calculateRespirationScore(respirationRate) {
+  //calculate respiration score
   if (respirationRate >= 12 && respirationRate <= 20) {
     return 0;
   } else if (respirationRate >= 9 && respirationRate <= 11) {
@@ -11,6 +12,7 @@ function calculateRespirationScore(respirationRate) {
 }
 
 function calculateTemperatureScore(temperature) {
+  //Calculate temperature score
   if (temperature <= 35) {
     return 3;
   } else if (temperature >= 39.1) {
@@ -23,6 +25,7 @@ function calculateTemperatureScore(temperature) {
 }
 
 function calculateSPO2Score(airOrOxygen, spo2) {
+  //Calculate SPO2 score
   if (airOrOxygen === 2) {
     if (spo2 >= 97) {
       return 3;
@@ -47,6 +50,7 @@ function calculateSPO2Score(airOrOxygen, spo2) {
 }
 
 function calculateCBGScore(cbg) {
+  //Calculate CBG score
   if (cbg.fasting) {
     if (cbg.value <= 3.4 || cbg.value >= 6.0) {
       return 3;
@@ -67,6 +71,7 @@ function calculateCBGScore(cbg) {
 }
 
 function hasScoreIncreased24Hours(mediScore, dateOfScore, previousMediScore) {
+  //Check if score has increased by more than 2 in 24 hours and return true or false if not
   return (
     previousMediScore &&
     dateOfScore - previousMediScore.dateOfScore <= 86400000 &&
@@ -93,9 +98,7 @@ function caculateMediScore({
     calculateSPO2Score(airOrOxygen, spo2) +
     calculateCBGScore(cbg);
 
-  /*
-  Return mediscore and a warning if needed
-  */
+  // Return Medi score and a warning if needed
   return hasScoreIncreased24Hours(mediScore, dateOfScore, previousMediScore)
     ? {
         mediScore,
